@@ -1,0 +1,6 @@
+[package]
+name = "pgexercices"
+version = "0.1.0"
+authors = ["Damien Castelltort <dcastelltort@gmail.com>"]
+
+[dependencies]

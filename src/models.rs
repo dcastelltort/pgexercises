@@ -4,7 +4,7 @@ use bigdecimal::BigDecimal;
 
 #[derive(Queryable,Identifiable,AsChangeset,Debug)]
 #[primary_key(bookid)]
-struct Booking {
+pub struct Booking {
     bookid : i32,
     facid : i32,
     memid : i32,
@@ -12,10 +12,10 @@ struct Booking {
     slots : i32
 }
 
-#[derive(Queryable,Identifiable,AsChangeset,Debug)]
+#[derive(Queryable,Identifiable,AsChangeset,Debug, QueryableByName, PartialEq)]
 #[primary_key(facid)]
 #[table_name = "facilities"]
-struct Facility {
+pub struct Facility {
     facid : i32,
     name : String,
     membercost : BigDecimal,
@@ -26,7 +26,7 @@ struct Facility {
 
 #[derive(Queryable,Identifiable,AsChangeset,Debug)]
 #[primary_key(memid)]
-struct Member {
+pub struct Member {
     memid : i32,
     surname : String,
     firstname : String,

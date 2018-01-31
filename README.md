@@ -1,2 +1,2 @@
-Implementing the exercices from pgexercices.com in rust + diesel
+Implementing the exercices from pgexercices.com using rust + diesel
 

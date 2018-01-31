@@ -24,6 +24,13 @@ pub struct Facility {
     monthlymaintenance : BigDecimal
 }
 
+#[derive(Queryable, PartialEq, Debug,QueryableByName)]
+#[table_name = "facilities"]
+pub struct FacilityPartial {
+    name : String,
+    membercost: BigDecimal
+}
+
 #[derive(Queryable,Identifiable,AsChangeset,Debug)]
 #[primary_key(memid)]
 pub struct Member {

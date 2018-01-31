@@ -27,21 +27,44 @@ fn main() {
     println!("Simple program that implement pgexercices using rust and the diesel framework . USE: cargo test instead");
 }
 
+fn print_results<T>(results: &Vec<T>) where T : std::fmt::Debug {
+    for r in results {
+        println!("{:?}", r);
+    }
+}
+
 #[test]
 fn basic_selectall() {
-let connection = establish_connection();
+    
+    let connection = establish_connection();
 
     use schema::facilities::dsl::*;
 
     let results_sql : Vec<Facility> = sql_query("SELECT * from facilities").load(&connection).expect("query failed to run");
     let results : Vec<Facility> = facilities.load(&connection).expect("diesel operation failed");
     
-    for r_sql in &results_sql {
-        println!("{:?}", r_sql);
-    }
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
 
-    for r in &results {
-        println!("{:?}", r);
-    }
+    assert_eq!(results_sql, results);
+}
+
+#[test]
+fn basic_select_specific() {
+
+    use schema::facilities::dsl::*;
+
+    let connection = establish_connection();
+
+    let results_sql : Vec<FacilityPartial> = sql_query("SELECT name, membercost FROM facilities").load::<FacilityPartial>(&connection).expect("query failed to run");
+    let results : Vec<FacilityPartial> = facilities.select((name, membercost)).load::<FacilityPartial>(&connection).expect("diesel operation failed");
+    
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
     assert_eq!(results_sql, results);
 }

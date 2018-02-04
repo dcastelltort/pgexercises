@@ -7,6 +7,7 @@ use bigdecimal::BigDecimal;
 use models::*;
 use utils::*;
 
+/// Basic Select All
 pub fn basic_selectall() -> (Vec<Facility>, Vec<Facility> ) {
     
     let connection = establish_connection();
@@ -35,6 +36,7 @@ fn test_basic_selectall() {
     assert_eq!(results_sql, results);
 }
 
+// Basic Select Specific
 pub fn basic_select_specific() -> (Vec<FacilityPartial>, Vec<FacilityPartial>) {
     use schema::facilities::dsl::*;
 
@@ -63,6 +65,7 @@ fn test_basic_select_specific()  {
     assert_eq!(results_sql, results);
 }
 
+/// Basic Select Where
 pub fn basic_select_where() -> (Vec<Facility> , Vec<Facility>) {
 
     use schema::facilities::dsl::*;
@@ -92,7 +95,7 @@ fn test_basic_select_where() {
     assert_eq!(results_sql, results);
 }
 
-
+/// Basic Select Where2
 pub fn basic_select_where2() -> (Vec<FacilityPartial4> , Vec<FacilityPartial4>) {
 
     use schema::facilities::dsl::*;

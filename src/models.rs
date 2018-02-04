@@ -2,6 +2,7 @@ use super::schema::{bookings, facilities, members};
 use std::time::SystemTime;
 use bigdecimal::BigDecimal;
 
+/// Booking models
 #[derive(Queryable,Identifiable,AsChangeset,Debug)]
 #[primary_key(bookid)]
 pub struct Booking {
@@ -12,6 +13,7 @@ pub struct Booking {
     slots : i32
 }
 
+/// Facility Models
 #[derive(Queryable,Identifiable,AsChangeset,Debug, QueryableByName, PartialEq)]
 #[primary_key(facid)]
 #[table_name = "facilities"]
@@ -41,6 +43,7 @@ pub struct FacilityPartial4 {
     monthlymaintenance : BigDecimal
 }
 
+/// Members Models
 #[derive(Queryable,Identifiable,AsChangeset,Debug)]
 #[primary_key(memid)]
 pub struct Member {

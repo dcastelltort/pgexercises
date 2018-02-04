@@ -91,3 +91,35 @@ fn test_basic_select_where() {
 
     assert_eq!(results_sql, results);
 }
+
+
+pub fn basic_select_where2() -> (Vec<FacilityPartial4> , Vec<FacilityPartial4>) {
+
+    use schema::facilities::dsl::*;
+
+    let connection = establish_connection();
+
+    let results_sql : Vec<FacilityPartial4> = sql_query("SELECT facid, name, membercost, monthlymaintenance FROM facilities WHERE membercost > 0 AND membercost < monthlymaintenance/50;")
+                                        .load::<FacilityPartial4>(&connection)
+                                        .expect("query failed to run");
+    let results : Vec<FacilityPartial4> = facilities.select((facid, name, membercost, monthlymaintenance))
+                                            .filter(membercost.gt(BigDecimal::from(0)))
+                                            .filter(membercost.lt(monthlymaintenance / BigDecimal::from(50))) 
+                                            .get_results::<FacilityPartial4>(&connection)
+                                            .expect("diesel operation failed");
+    
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_select_where2() {
+    
+    let (results_sql, results) = basic_select_where2();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}

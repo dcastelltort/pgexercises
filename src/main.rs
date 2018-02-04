@@ -22,11 +22,7 @@ fn main() {
     println!("Simple program that implement pgexercices using rust and the diesel framework . USE: cargo test instead");
 }
 
-fn print_results<T>(results: &Vec<T>) where T : std::fmt::Debug {
-    for r in results {
-        println!("{:?}", r);
-    }
-}
+
 
 #[test]
 fn basic_selectall() {

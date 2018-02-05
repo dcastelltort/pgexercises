@@ -126,3 +126,32 @@ fn test_basic_select_where2() {
 
     assert_eq!(results_sql, results);
 }
+
+/// Basic Where 3
+pub fn basic_select_where3() -> (Vec<Facility>, Vec<Facility>) {
+
+    use schema::facilities::dsl::*;
+
+    let connection = establish_connection();
+
+    let results_sql : Vec<Facility> = sql_query("SELECT * FROM facilities WHERE name LIKE '%Tennis%'")
+                                        .load::<Facility>(&connection)
+                                        .expect("query failed to run");
+    let results : Vec<Facility> = facilities.filter(name.like("%Tennis%")) 
+                                            .get_results::<Facility>(&connection)
+                                            .expect("diesel operation failed");
+    
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_select_where3() {
+    let (results_sql, results) = basic_select_where3();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}

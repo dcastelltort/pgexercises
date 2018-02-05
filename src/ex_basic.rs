@@ -155,3 +155,35 @@ fn test_basic_select_where3() {
 
     assert_eq!(results_sql, results);
 }
+
+
+
+/// Basic Where 4
+pub fn basic_select_where4() -> (Vec<Facility>, Vec<Facility>) {
+
+    use schema::facilities::dsl::*;
+
+    let connection = establish_connection();
+
+    let results_sql : Vec<Facility> = sql_query("SELECT * FROM facilities WHERE facid IN (1,5)")
+                                        .load::<Facility>(&connection)
+                                        .expect("query failed to run");
+    let results : Vec<Facility> = facilities.filter(facid.eq_any(vec![1,5]))
+                                            .get_results::<Facility>(&connection)
+                                            .expect("diesel operation failed");
+    
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_select_where4() {
+    let (results_sql, results) = basic_select_where4();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}
+

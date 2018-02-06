@@ -187,3 +187,45 @@ fn test_basic_select_where4() {
     assert_eq!(results_sql, results);
 }
 
+///Basic Classify
+pub fn basic_classify() -> (Vec<(String, String)>, Vec<(String, String)>) {
+    use schema::facilities::dsl::*;
+
+    let connection = establish_connection();
+    // trying to do the same as 
+    // "SELECT name,
+	// CASE WHEN monthlymaintenance < 100 THEN 'cheap' ELSE 'expensive' END AS cost
+	// FROM facilities"
+    // 
+    let intermediate_sql : Vec<FacilityPartial2> = sql_query("SELECT name,
+	                                            monthlymaintenance FROM facilities")
+                                        .load::<FacilityPartial2>(&connection)
+                                        .expect("query failed to run");
+    let intermediate_results : Vec<(String,BigDecimal)> = facilities.select((name, monthlymaintenance))
+                                            .load::<(String,BigDecimal)>(&connection)
+                                            .expect("diesel operation failed");
+    
+    let results_sql : Vec<(String, String)> = intermediate_sql.into_iter().map(|res: FacilityPartial2| {
+        let cost = if res.monthlymaintenance < BigDecimal::from(100) {String::from("cheap")} else {String::from("expensive")};
+        (res.name, cost)
+    }).collect();
+
+    let results : Vec<(String, String)> = intermediate_results.into_iter().map(|res: (String,BigDecimal)| {
+        let cost = if res.1 < BigDecimal::from(100) {String::from("cheap")} else {String::from("expensive")};
+        (res.0, cost)
+    }).collect();
+
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_classify() {
+    let (results_sql, results) = basic_classify();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}

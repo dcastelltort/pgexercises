@@ -33,6 +33,14 @@ pub struct FacilityPartial {
     membercost: BigDecimal
 }
 
+#[derive(Queryable, PartialEq, Debug,QueryableByName)]
+#[table_name = "facilities"]
+pub struct FacilityPartial2 {
+    pub name : String,
+    pub monthlymaintenance: BigDecimal
+}
+
+
 #[derive(Queryable, Identifiable, PartialEq, Debug,QueryableByName)]
 #[primary_key(facid)]
 #[table_name = "facilities"]

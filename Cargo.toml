@@ -4,6 +4,7 @@ version = "0.1.0"
 authors = ["Damien Castelltort <dcastelltort@gmail.com>"]
 
 [dependencies]
-diesel = { version = "1.0.0", features = ["postgres", "numeric"] }
+diesel = { version = "1.0.0", features = ["postgres", "numeric", "chrono"] }
 dotenv = "0.9.0"
 bigdecimal = "0.0.10"    # Arbitrary percision decimal numbers
+chrono = { version = "0.4", features = ["serde"] }

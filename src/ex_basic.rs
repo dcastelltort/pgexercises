@@ -3,6 +3,7 @@ use diesel::prelude::*;
 use diesel::sql_query;
 
 use bigdecimal::BigDecimal;
+use chrono::{NaiveDate};
 
 use models::*;
 use utils::*;
@@ -221,6 +222,36 @@ pub fn basic_classify() -> (Vec<(String, String)>, Vec<(String, String)>) {
 #[test]
 fn test_basic_classify() {
     let (results_sql, results) = basic_classify();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}
+
+/// Basic Date
+pub fn basic_date() -> (Vec<Member4>, Vec<Member4>) {
+
+    use schema::members::dsl::*;
+
+    let connection = establish_connection();
+
+    let results_sql : Vec<Member4> = sql_query("SELECT memid, surname, firstname, joindate FROM members WHERE joindate > TIMESTAMP '2012-09-01'")
+                                        .load::<Member4>(&connection)
+                                        .expect("query failed to run");
+    let results : Vec<Member4> = members.select((memid, surname, firstname, joindate))
+                                        .filter(joindate.gt(NaiveDate::from_ymd(2012, 9, 1).and_hms(0,0,0)))
+                                        .get_results::<Member4>(&connection)
+                                        .expect("diesel operation failed");
+    
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_date() {
+    let (results_sql, results) = basic_date();
 
     println!("\nSQL ---------");
     print_results(&results_sql);

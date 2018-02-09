@@ -1,6 +1,6 @@
 use super::schema::{bookings, facilities, members};
-use std::time::SystemTime;
 use bigdecimal::BigDecimal;
+use chrono::NaiveDateTime;
 
 /// Booking models
 #[derive(Queryable,Identifiable,AsChangeset,Debug)]
@@ -9,7 +9,7 @@ pub struct Booking {
     bookid : i32,
     facid : i32,
     memid : i32,
-    starttime : SystemTime,
+    starttime : NaiveDateTime,
     slots : i32
 }
 
@@ -62,5 +62,15 @@ pub struct Member {
     zipcode :i32,
     telephone : String,
     recommendedby : Option<i32>,
-    joindate : SystemTime
+    joindate : NaiveDateTime
+}
+
+#[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]
+#[primary_key(memid)]
+#[table_name = "members"]
+pub struct Member4 {
+    memid : i32,
+    surname : String,
+    firstname : String,
+    joindate : NaiveDateTime
 }

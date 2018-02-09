@@ -2,6 +2,7 @@
 extern crate diesel;
 extern crate bigdecimal;
 extern crate dotenv;
+extern crate chrono;
 
 pub mod schema;
 pub mod models;

@@ -20,3 +20,15 @@ pub fn print_results<T>(results: &Vec<T>) where T : fmt::Debug {
         println!("{:?}", r);
     }
 }
+
+pub fn test_results<T>(f: &Fn() ->(Vec<T>,Vec<T>)) where T: fmt::Debug + PartialEq {
+
+    let (results_sql, results) = f();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}

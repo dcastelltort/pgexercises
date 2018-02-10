@@ -26,15 +26,7 @@ pub fn basic_selectall() -> (Vec<Facility>, Vec<Facility> ) {
 
 #[test]
 fn test_basic_selectall() {
-
-    let (results_sql, results) = basic_selectall();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_selectall);
 }
 
 // Basic Select Specific
@@ -55,15 +47,7 @@ pub fn basic_select_specific() -> (Vec<FacilityPartial>, Vec<FacilityPartial>) {
 
 #[test]
 fn test_basic_select_specific()  {
-    
-    let (results_sql , results) = basic_select_specific();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_select_specific);
 }
 
 /// Basic Select Where
@@ -85,15 +69,7 @@ pub fn basic_select_where() -> (Vec<Facility> , Vec<Facility>) {
 
 #[test]
 fn test_basic_select_where() {
-    
-    let (results_sql, results) = basic_select_where();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_select_where);
 }
 
 /// Basic Select Where2
@@ -117,15 +93,7 @@ pub fn basic_select_where2() -> (Vec<FacilityPartial4> , Vec<FacilityPartial4>) 
 
 #[test]
 fn test_basic_select_where2() {
-    
-    let (results_sql, results) = basic_select_where2();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_select_where2);
 }
 
 /// Basic Where 3
@@ -147,17 +115,8 @@ pub fn basic_select_where3() -> (Vec<Facility>, Vec<Facility>) {
 
 #[test]
 fn test_basic_select_where3() {
-    let (results_sql, results) = basic_select_where3();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_select_where3);
 }
-
-
 
 /// Basic Where 4
 pub fn basic_select_where4() -> (Vec<Facility>, Vec<Facility>) {
@@ -178,14 +137,7 @@ pub fn basic_select_where4() -> (Vec<Facility>, Vec<Facility>) {
 
 #[test]
 fn test_basic_select_where4() {
-    let (results_sql, results) = basic_select_where4();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_select_where4);
 }
 
 ///Basic Classify
@@ -221,14 +173,7 @@ pub fn basic_classify() -> (Vec<(String, String)>, Vec<(String, String)>) {
 
 #[test]
 fn test_basic_classify() {
-    let (results_sql, results) = basic_classify();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_classify);
 }
 
 /// Basic Date
@@ -251,14 +196,7 @@ pub fn basic_date() -> (Vec<Member4>, Vec<Member4>) {
 
 #[test]
 fn test_basic_date() {
-    let (results_sql, results) = basic_date();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_date);
 }
 
 
@@ -284,14 +222,7 @@ pub fn basic_unique() -> (Vec<Member2>, Vec<Member2>) {
 
 #[test]
 fn test_basic_unique() {
-    let (results_sql, results) = basic_unique();
-
-    println!("\nSQL ---------");
-    print_results(&results_sql);
-    println!("\nDSL ---------");
-    print_results(&results);
-
-    assert_eq!(results_sql, results);
+    test_results(&basic_unique);
 }
 
 

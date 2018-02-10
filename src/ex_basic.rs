@@ -260,3 +260,38 @@ fn test_basic_date() {
 
     assert_eq!(results_sql, results);
 }
+
+
+/// Basic Unique
+pub fn basic_unique() -> (Vec<Member2>, Vec<Member2>) {
+
+    use schema::members::dsl::*;
+
+    let connection = establish_connection();
+
+    let results_sql : Vec<Member2> = sql_query("SELECT DISTINCT memid, surname FROM members ORDER BY surname ASC LIMIT 10")
+                                        .load::<Member2>(&connection)
+                                        .expect("query failed to run");
+    let results : Vec<Member2> = members.select((memid,surname))
+                                        .distinct()
+                                        .limit(10)
+                                        .order(surname.asc())
+                                        .get_results::<Member2>(&connection)
+                                        .expect("diesel operation failed");
+    
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_unique() {
+    let (results_sql, results) = basic_unique();
+
+    println!("\nSQL ---------");
+    print_results(&results_sql);
+    println!("\nDSL ---------");
+    print_results(&results);
+
+    assert_eq!(results_sql, results);
+}
+
+

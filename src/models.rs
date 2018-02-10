@@ -68,6 +68,14 @@ pub struct Member {
 #[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]
 #[primary_key(memid)]
 #[table_name = "members"]
+pub struct Member2 {
+    memid : i32,
+    surname : String
+}
+
+#[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]
+#[primary_key(memid)]
+#[table_name = "members"]
 pub struct Member4 {
     memid : i32,
     surname : String,

@@ -226,3 +226,57 @@ fn test_basic_unique() {
 }
 
 
+/// Basic Union
+pub fn basic_union() -> (Vec<String>, Vec<String>) {
+
+    use schema::members::dsl::*;
+    use schema::facilities::dsl::*;
+
+    let connection = establish_connection();
+    
+    //SELECT surname FROM cd.members
+    //UNION
+    //SELECT name from cd.facilities
+
+    //no union support, try to mimic it
+    let results_sql_members : Vec<Member1> = sql_query("SELECT surname FROM members")
+                                        .load::<Member1>(&connection)
+                                        .expect("query failed to run");
+    let results_sql_facilities : Vec<FacilityPartial1> = sql_query("SELECT name from facilities")
+                                        .load::<FacilityPartial1>(&connection)
+                                        .expect("query failed to run");
+
+    let mut results_sql = vec!();
+    for r in results_sql_members {
+        results_sql.push(r.surname);
+    }
+
+    for r in results_sql_facilities {
+        results_sql.push(r.name);
+    }
+    
+    let results_members : Vec<String> = members.select(surname)
+                                        .load::<String>(&connection)
+                                        .expect("diesel operation failed");
+
+    let results_facilities : Vec<String> = facilities.select(name)
+                                        .load::<String>(&connection)
+                                        .expect("diesel operation failed");
+    
+    let mut results : Vec<String>= vec!();
+    for r in results_members {
+        results.push(r);
+    }
+
+    for r in results_facilities {
+        results.push(r);
+    }
+
+    (results_sql, results)
+}
+
+
+#[test]
+fn test_basic_union() {
+    test_results(&basic_union);
+}

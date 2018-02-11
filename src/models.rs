@@ -35,6 +35,12 @@ pub struct FacilityPartial {
 
 #[derive(Queryable, PartialEq, Debug,QueryableByName)]
 #[table_name = "facilities"]
+pub struct FacilityPartial1 {
+    pub name : String
+}
+
+#[derive(Queryable, PartialEq, Debug,QueryableByName)]
+#[table_name = "facilities"]
 pub struct FacilityPartial2 {
     pub name : String,
     pub monthlymaintenance: BigDecimal
@@ -63,6 +69,12 @@ pub struct Member {
     telephone : String,
     recommendedby : Option<i32>,
     joindate : NaiveDateTime
+}
+
+#[derive(Queryable,Debug,QueryableByName,PartialEq)]
+#[table_name = "members"]
+pub struct Member1 {
+    pub surname : String
 }
 
 #[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]

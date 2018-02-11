@@ -3,7 +3,7 @@ use diesel::prelude::*;
 use diesel::sql_query;
 
 use bigdecimal::BigDecimal;
-use chrono::{NaiveDate};
+use chrono::{NaiveDate, NaiveDateTime};
 
 use models::*;
 use utils::*;
@@ -279,4 +279,34 @@ pub fn basic_union() -> (Vec<String>, Vec<String>) {
 #[test]
 fn test_basic_union() {
     test_results(&basic_union);
+}
+
+
+
+
+
+/// Basic Agg
+pub fn basic_agg() -> (Vec<String>, Vec<String>) {
+
+    use schema::members::dsl::*;
+    use diesel::dsl::max;
+    let connection = establish_connection();
+
+    //real, but otherwise diesel panicks because joindate is missing:
+    //"SELECT MAX(joindate) as latest FROM members"
+    let results_sql : Vec<String> = sql_query("SELECT MAX(joindate) as joindate FROM members")
+                                        .load::<Member1jd>(&connection)
+                                        .expect("query failed to run")
+                                        .iter().map(|member| { member.joindate.format("%Y-%m-%d %H:%M:%S").to_string() }).collect();
+    let results_date : Option<NaiveDateTime> = members.select(max(joindate))
+                                        .first::<Option<NaiveDateTime>>(&connection)
+                                        .expect("diesel operation failed");
+                                        
+    let results : Vec<String> = vec![results_date.unwrap().format("%Y-%m-%d %H:%M:%S").to_string()];
+    (results_sql, results)
+}
+
+#[test]
+fn test_basic_agg() {
+    test_results(&basic_agg);
 }

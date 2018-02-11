@@ -77,12 +77,26 @@ pub struct Member1 {
     pub surname : String
 }
 
+#[derive(Queryable,Debug,QueryableByName,PartialEq)]
+#[table_name = "members"]
+pub struct Member1jd {
+    pub joindate : NaiveDateTime
+}
+
 #[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]
 #[primary_key(memid)]
 #[table_name = "members"]
 pub struct Member2 {
     memid : i32,
     surname : String
+}
+
+#[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]
+#[primary_key(memid)]
+#[table_name = "members"]
+pub struct Member2jd {
+    memid : i32,
+    pub joindate : NaiveDateTime
 }
 
 #[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]

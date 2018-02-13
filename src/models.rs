@@ -99,6 +99,14 @@ pub struct Member2jd {
     pub joindate : NaiveDateTime
 }
 
+#[derive(Queryable,Debug,QueryableByName,PartialEq)]
+#[table_name = "members"]
+pub struct Member3 {
+    firstname: String,
+    surname: String,
+    joindate : NaiveDateTime
+}
+
 #[derive(Queryable,Identifiable,AsChangeset,Debug,QueryableByName,PartialEq)]
 #[primary_key(memid)]
 #[table_name = "members"]

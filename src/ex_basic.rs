@@ -19,7 +19,7 @@ pub fn basic_selectall() -> (Vec<Facility>, Vec<Facility> ) {
     let results_sql : Vec<Facility> = sql_query("SELECT * from facilities")
                                         .load(&connection)
                                         .expect("query failed to run");
-    //ORM
+    //DSL
     let results : Vec<Facility> = facilities.load(&connection)
                                             .expect("diesel operation failed");
     
@@ -42,7 +42,7 @@ pub fn basic_select_specific() -> (Vec<FacilityPartial>, Vec<FacilityPartial>) {
                                                 .load::<FacilityPartial>(&connection)
                                                 .expect("query failed to run");
     
-    //ORM
+    //DSL
     let results : Vec<FacilityPartial> = facilities.select((name, membercost))
                                                     .load::<FacilityPartial>(&connection)
                                                     .expect("diesel operation failed");
@@ -67,7 +67,7 @@ pub fn basic_select_where() -> (Vec<Facility> , Vec<Facility>) {
                                         .load::<Facility>(&connection)
                                         .expect("query failed to run");
     
-    //ORM
+    //DSL
     let results : Vec<Facility> = facilities.filter(membercost.gt(BigDecimal::from(0)))
                                             .get_results::<Facility>(&connection)
                                             .expect("diesel operation failed");
@@ -92,7 +92,7 @@ pub fn basic_select_where2() -> (Vec<FacilityPartial4> , Vec<FacilityPartial4>) 
                                         .load::<FacilityPartial4>(&connection)
                                         .expect("query failed to run");
     
-    //ORM
+    //DSL
     let results : Vec<FacilityPartial4> = facilities.select((facid, name, membercost, monthlymaintenance))
                                             .filter(membercost.gt(BigDecimal::from(0)))
                                             .filter(membercost.lt(monthlymaintenance / BigDecimal::from(50))) 
@@ -119,7 +119,7 @@ pub fn basic_select_where3() -> (Vec<Facility>, Vec<Facility>) {
                                         .load::<Facility>(&connection)
                                         .expect("query failed to run");
     
-    //ORM
+    //DSL
     let results : Vec<Facility> = facilities.filter(name.like("%Tennis%")) 
                                             .get_results::<Facility>(&connection)
                                             .expect("diesel operation failed");
@@ -143,7 +143,7 @@ pub fn basic_select_where4() -> (Vec<Facility>, Vec<Facility>) {
     let results_sql : Vec<Facility> = sql_query("SELECT * FROM facilities WHERE facid IN (1,5)")
                                         .load::<Facility>(&connection)
                                         .expect("query failed to run");
-    //ORM
+    //DSL
     let results : Vec<Facility> = facilities.filter(facid.eq_any(vec![1,5]))
                                             .get_results::<Facility>(&connection)
                                             .expect("diesel operation failed");
@@ -177,7 +177,7 @@ pub fn basic_classify() -> (Vec<(String, String)>, Vec<(String, String)>) {
         (res.name, cost)
     }).collect();
 
-    //ORM
+    //DSL
     let intermediate_results : Vec<(String,BigDecimal)> = facilities.select((name, monthlymaintenance))
                                             .load::<(String,BigDecimal)>(&connection)
                                             .expect("diesel operation failed");
@@ -206,7 +206,7 @@ pub fn basic_date() -> (Vec<Member4>, Vec<Member4>) {
     let results_sql : Vec<Member4> = sql_query("SELECT memid, surname, firstname, joindate FROM members WHERE joindate > TIMESTAMP '2012-09-01'")
                                         .load::<Member4>(&connection)
                                         .expect("query failed to run");
-    //ORM
+    //DSL
     let results : Vec<Member4> = members.select((memid, surname, firstname, joindate))
                                         .filter(joindate.gt(NaiveDate::from_ymd(2012, 9, 1).and_hms(0,0,0)))
                                         .get_results::<Member4>(&connection)
@@ -232,7 +232,7 @@ pub fn basic_unique() -> (Vec<Member2>, Vec<Member2>) {
     let results_sql : Vec<Member2> = sql_query("SELECT DISTINCT memid, surname FROM members ORDER BY surname ASC LIMIT 10")
                                         .load::<Member2>(&connection)
                                         .expect("query failed to run");
-    //ORM
+    //DSL
     let results : Vec<Member2> = members.select((memid,surname))
                                         .distinct()
                                         .limit(10)
@@ -268,7 +268,7 @@ pub fn basic_union() -> (Vec<String>, Vec<String>) {
     let results_sql_facilities : Vec<FacilityPartial1> = sql_query("SELECT name from facilities")
                                         .load::<FacilityPartial1>(&connection)
                                         .expect("query failed to run");
-    //ORM
+    //DSL
     let mut results_sql = vec!();
     for r in results_sql_members {
         results_sql.push(r.surname);
@@ -318,7 +318,7 @@ pub fn basic_agg() -> (Vec<String>, Vec<String>) {
                                         .load::<Member1jd>(&connection)
                                         .expect("query failed to run")
                                         .iter().map(|member| { member.joindate.format("%Y-%m-%d %H:%M:%S").to_string() }).collect();
-    //ORM
+    //DSL
     let results_date : Option<NaiveDateTime> = members.select(max(joindate))
                                         .first::<Option<NaiveDateTime>>(&connection)
                                         .expect("diesel operation failed");
@@ -343,16 +343,7 @@ pub fn basic_agg2() -> (Vec<Member3>, Vec<Member3>) {
     let results_sql : Vec<Member3> = sql_query("SELECT firstname, surname, joindate FROM members WHERE joindate = (SELECT MAX(joindate) FROM members);")
                                         .load::<Member3>(&connection)
                                         .expect("query failed to run");
-    //ORM
-    /*
-    let max_joindate : Option<NaiveDateTime> = members.select(max(joindate))
-                                        .first::<Option<NaiveDateTime>>(&connection)
-                                        .expect("diesel operation failed");
-
-    let results : Vec<Member3> = members.select((firstname, surname, joindate))
-                                        .filter(joindate.eq(max_joindate.unwrap()))
-                                        .get_results::<Member3>(&connection)
-                                        .expect("diesel operation failed");*/
+    //DSL
     let results : Vec<Member3> = members.select((firstname, surname, joindate))
                                         .filter(joindate.eq_any(members.select(max(joindate))))
                                         .get_results::<Member3>(&connection)

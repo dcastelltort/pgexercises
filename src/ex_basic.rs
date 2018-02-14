@@ -344,6 +344,7 @@ pub fn basic_agg2() -> (Vec<Member3>, Vec<Member3>) {
                                         .load::<Member3>(&connection)
                                         .expect("query failed to run");
     //ORM
+    /*
     let max_joindate : Option<NaiveDateTime> = members.select(max(joindate))
                                         .first::<Option<NaiveDateTime>>(&connection)
                                         .expect("diesel operation failed");
@@ -351,7 +352,12 @@ pub fn basic_agg2() -> (Vec<Member3>, Vec<Member3>) {
     let results : Vec<Member3> = members.select((firstname, surname, joindate))
                                         .filter(joindate.eq(max_joindate.unwrap()))
                                         .get_results::<Member3>(&connection)
+                                        .expect("diesel operation failed");*/
+    let results : Vec<Member3> = members.select((firstname, surname, joindate))
+                                        .filter(joindate.eq_any(members.select(max(joindate))))
+                                        .get_results::<Member3>(&connection)
                                         .expect("diesel operation failed");
+
     (results_sql, results)
 }
 

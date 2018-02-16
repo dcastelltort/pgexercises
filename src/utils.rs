@@ -1,4 +1,3 @@
-
 use std::env;
 use std::fmt;
 
@@ -15,14 +14,19 @@ pub fn establish_connection() -> PgConnection {
 }
 
 /// utility function used to print results from plain SQL and DSL queries
-pub fn print_results<T>(results: &[T]) where T : fmt::Debug {
+pub fn print_results<T>(results: &[T])
+where
+    T: fmt::Debug,
+{
     for r in results {
         println!("{:?}", r);
     }
 }
 
-pub fn test_results<T>(f: &Fn() ->(Vec<T>,Vec<T>)) where T: fmt::Debug + PartialEq {
-
+pub fn test_results<T>(f: &Fn() -> (Vec<T>, Vec<T>))
+where
+    T: fmt::Debug + PartialEq,
+{
     let (results_sql, results) = f();
 
     println!("\nSQL ---------");

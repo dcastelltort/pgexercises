@@ -35,8 +35,4 @@ table! {
 joinable!(bookings -> facilities (facid));
 joinable!(bookings -> members (memid));
 
-allow_tables_to_appear_in_same_query!(
-    bookings,
-    facilities,
-    members,
-);
+allow_tables_to_appear_in_same_query!(bookings, facilities, members,);

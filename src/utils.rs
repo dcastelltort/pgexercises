@@ -15,7 +15,7 @@ pub fn establish_connection() -> PgConnection {
 }
 
 /// utility function used to print results from plain SQL and DSL queries
-pub fn print_results<T>(results: &Vec<T>) where T : fmt::Debug {
+pub fn print_results<T>(results: &[T]) where T : fmt::Debug {
     for r in results {
         println!("{:?}", r);
     }

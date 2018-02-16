@@ -157,7 +157,8 @@ fn test_basic_select_where4() {
 }
 
 ///Basic Classify
-pub fn basic_classify() -> (Vec<(String, String)>, Vec<(String, String)>) {
+type StringTuple = (String,String);
+pub fn basic_classify() -> (Vec<StringTuple>, Vec<StringTuple>) {
     use schema::facilities::dsl::*;
 
     let connection = establish_connection();

@@ -13,6 +13,12 @@ pub struct Booking {
     slots: i32,
 }
 
+#[derive(Queryable, QueryableByName, Debug, PartialEq)]
+#[table_name = "bookings"]
+pub struct Booking1 {
+    pub starttime: NaiveDateTime,
+}
+
 /// Facility Models
 #[derive(Queryable, Identifiable, AsChangeset, Debug, QueryableByName, PartialEq)]
 #[primary_key(facid)]

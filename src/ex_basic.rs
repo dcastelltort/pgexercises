@@ -114,8 +114,9 @@ pub fn basic_select_where3() -> (Vec<Facility>, Vec<Facility>) {
     let connection = establish_connection();
 
     //SQL
-    let results_sql: Vec<Facility> = sql_query("SELECT * FROM facilities WHERE name LIKE '%Tennis%'")
-        .load::<Facility>(&connection)
+    let results_sql: Vec<Facility> = sql_query(
+        "SELECT * FROM facilities WHERE name LIKE '%Tennis%'",
+    ).load::<Facility>(&connection)
         .expect("query failed to run");
 
     //DSL
@@ -168,8 +169,9 @@ pub fn basic_classify() -> (Vec<StringTuple>, Vec<StringTuple>) {
     // CASE WHEN monthlymaintenance < 100 THEN 'cheap' ELSE 'expensive' END AS cost
     // FROM facilities"
     //
-    let intermediate_sql: Vec<FacilityPartial2> = sql_query("SELECT name,monthlymaintenance FROM facilities")
-        .load::<FacilityPartial2>(&connection)
+    let intermediate_sql: Vec<FacilityPartial2> = sql_query(
+        "SELECT name,monthlymaintenance FROM facilities",
+    ).load::<FacilityPartial2>(&connection)
         .expect("query failed to run");
 
     let results_sql: Vec<(String, String)> = intermediate_sql
@@ -242,8 +244,9 @@ pub fn basic_unique() -> (Vec<Member2>, Vec<Member2>) {
     let connection = establish_connection();
 
     //SQL
-    let results_sql: Vec<Member2> = sql_query("SELECT DISTINCT memid, surname FROM members ORDER BY surname ASC LIMIT 10")
-        .load::<Member2>(&connection)
+    let results_sql: Vec<Member2> = sql_query(
+        "SELECT DISTINCT memid, surname FROM members ORDER BY surname ASC LIMIT 10",
+    ).load::<Member2>(&connection)
         .expect("query failed to run");
     //DSL
     let results: Vec<Member2> = members
